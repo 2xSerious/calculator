@@ -6,6 +6,8 @@ var prev = document.querySelector(".prev");
 var currentNum = "";
 var prevNum = "";
 var opr = "";
+var count = 0;
+
 for (let i = 0; i < btns.length; i++) {
   btns[i].addEventListener("click", function () {
     currentNum += this.innerHTML;
@@ -28,36 +30,82 @@ for (let i = 0; i < operations.length; i++) {
         prev.innerHTML = "";
         currentNum = "";
         prevNum = "";
+        count = 0;
         break;
       case "÷":
-        prevNum = result.innerHTML;
-        prev.innerHTML = prevNum + "/";
-        result.innerHTML = "";
-        currentNum = "";
-        opr = "divide";
-        break;
+        if (count > 1) {
+          prevNum = result.innerHTML;
+          prev.innerHTML = prevNum + "/";
+          result.innerHTML = "";
+          currentNum = "";
+          opr = "divide";
+          count++;
+          break;
+        } else {
+          let res = divide(prevNum, currentNum);
+          result.innerHTML = "";
+          currentNum = "";
+          prevNum = res;
+          prev.innerHTML = res + "/";
+          break;
+        }
+
       case "+":
-        prevNum = result.innerHTML;
-        prev.innerHTML = prevNum + "+";
-        result.innerHTML = "";
-        currentNum = "";
-        opr = "sum";
-        break;
+        if (count < 1) {
+          prevNum = result.innerHTML;
+          prev.innerHTML = prevNum + "+";
+          result.innerHTML = "";
+          currentNum = "";
+          opr = "sum";
+          count++;
+          break;
+        } else {
+          let res = sum(prevNum, currentNum);
+          result.innerHTML = "";
+          currentNum = "";
+          prevNum = res;
+          prev.innerHTML = res + "+";
+          break;
+        }
+
       case "×":
-        prevNum = result.innerHTML;
-        prev.innerHTML = prevNum + "*";
-        result.innerHTML = "";
-        currentNum = "";
-        opr = "multiply";
-        break;
+        if (count < 1) {
+          prevNum = result.innerHTML;
+          prev.innerHTML = prevNum + "*";
+          result.innerHTML = "";
+          currentNum = "";
+          opr = "multiply";
+          count++;
+          break;
+        } else {
+          let res = multiply(prevNum, currentNum);
+          result.innerHTML = "";
+          currentNum = "";
+          prevNum = res;
+          prev.innerHTML = res + "*";
+          break;
+        }
+
       case "−":
-        prevNum = result.innerHTML;
-        prev.innerHTML = prevNum + "-";
-        result.innerHTML = "";
-        currentNum = "";
-        opr = "substract";
-        break;
+        if (count > 1) {
+          prevNum = result.innerHTML;
+          prev.innerHTML = prevNum + "-";
+          result.innerHTML = "";
+          currentNum = "";
+          opr = "substract";
+          count++;
+          break;
+        } else {
+          let res = substract(prevNum, currentNum);
+          result.innerHTML = "";
+          currentNum = "";
+          prevNum = res;
+          prev.innerHTML = res + "-";
+          break;
+        }
+
       case "=":
+        count = 0;
         if (opr === "divide") {
           let res = divide(prevNum, currentNum);
           result.innerHTML = res;
@@ -121,3 +169,5 @@ document.querySelector(".negative").addEventListener("click", () => {
     result.innerHTML = Math.abs(currentNum);
   }
 });
+
+function handler() {}
